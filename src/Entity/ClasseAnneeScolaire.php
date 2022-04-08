@@ -45,12 +45,6 @@ class ClasseAnneeScolaire
     public $libelle;
 
     /**
-     * @ORM\ManyToOne(targetEntity=AnneeScolaire::class, inversedBy="classeAnneeScolaires")
-     * 
-     */
-    public $anneescolaire;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Classe::class, inversedBy="classeAnneeScolaires")
      */
     public $classe;
@@ -72,16 +66,10 @@ class ClasseAnneeScolaire
      */
     private $matiereClasseAnneeScolairs;
 
-  
-    /**
-     * @ORM\OneToMany(targetEntity=Apprenant::class, mappedBy="classeAnneeScolaire")
-     */
-    private $apprennant;
 
     public function __construct()
     {
         $this->matiereClasseAnneeScolairs = new ArrayCollection();
-        $this->apprennant = new ArrayCollection();
     }
 
    
@@ -179,38 +167,6 @@ class ClasseAnneeScolaire
         }
 
         return $this;
-    }
-
-    /**
-     * @return Collection|Apprenant[]
-     */
-    public function getApprennant(): Collection
-    {
-        return $this->apprennant;
-    }
-
-    public function addApprennant(Apprenant $apprennant): self
-    {
-        if (!$this->apprennant->contains($apprennant)) {
-            $this->apprennant[] = $apprennant;
-            $apprennant->setClasseAnneeScolaire($this);
-        }
-
-        return $this;
-    }
-
-    public function removeApprennant(Apprenant $apprennant): self
-    {
-        if ($this->apprennant->removeElement($apprennant)) {
-            // set the owning side to null (unless already changed)
-            if ($apprennant->getClasseAnneeScolaire() === $this) {
-                $apprennant->setClasseAnneeScolaire(null);
-            }
-        }
-
-        return $this;
-    }
-
-   
+    }   
 
 }

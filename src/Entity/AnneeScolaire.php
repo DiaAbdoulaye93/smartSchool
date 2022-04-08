@@ -48,9 +48,15 @@ class AnneeScolaire
      */
     private $classeAnneeScolaires;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Inscription::class, mappedBy="anneeScolaire")
+     */
+    private $inscription;
+
     public function __construct()
     {
         $this->classeAnneeScolaires = new ArrayCollection();
+        $this->inscription = new ArrayCollection();
       
     }
 
@@ -105,5 +111,35 @@ class AnneeScolaire
      */
     public function __toString(){
         return $this->libelle;
+    }
+
+    /**
+     * @return Collection|Inscription[]
+     */
+    public function getInscription(): Collection
+    {
+        return $this->inscription;
+    }
+
+    public function addInscription(Inscription $inscription): self
+    {
+        if (!$this->inscription->contains($inscription)) {
+            $this->inscription[] = $inscription;
+            $inscription->setAnneeScolaire($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInscription(Inscription $inscription): self
+    {
+        if ($this->inscription->removeElement($inscription)) {
+            // set the owning side to null (unless already changed)
+            if ($inscription->getAnneeScolaire() === $this) {
+                $inscription->setAnneeScolaire(null);
+            }
+        }
+
+        return $this;
     }
 }

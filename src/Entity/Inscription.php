@@ -27,6 +27,16 @@ class Inscription
      */
     private $date_inscription;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Apprenant::class, inversedBy="inscription")
+     */
+    private $apprenant;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=AnneeScolaire::class, inversedBy="inscription")
+     */
+    private $anneeScolaire;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -52,6 +62,30 @@ class Inscription
     public function setDateInscription(\DateTimeInterface $date_inscription): self
     {
         $this->date_inscription = $date_inscription;
+
+        return $this;
+    }
+
+    public function getApprenant(): ?Apprenant
+    {
+        return $this->apprenant;
+    }
+
+    public function setApprenant(?Apprenant $apprenant): self
+    {
+        $this->apprenant = $apprenant;
+
+        return $this;
+    }
+
+    public function getAnneeScolaire(): ?AnneeScolaire
+    {
+        return $this->anneeScolaire;
+    }
+
+    public function setAnneeScolaire(?AnneeScolaire $anneeScolaire): self
+    {
+        $this->anneeScolaire = $anneeScolaire;
 
         return $this;
     }

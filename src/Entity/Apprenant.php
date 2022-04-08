@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ApprenantRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Annotation\ApiResource;
@@ -69,11 +71,16 @@ class Apprenant extends User
      */
     public $avatar;
 
-  
     /**
-     * @ORM\ManyToOne(targetEntity=ClasseAnneeScolaire::class, inversedBy="apprennant")
+     * @ORM\OneToMany(targetEntity=Inscription::class, mappedBy="apprenant")
      */
-    private $classeAnneeScolaire;
+    private $inscription;
+
+    public function __construct()
+    {
+        $this->inscription = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -168,15 +175,32 @@ class Apprenant extends User
         return $this;
     }
 
-
-    public function getClasseAnneeScolaire(): ?ClasseAnneeScolaire
+    /**
+     * @return Collection|Inscription[]
+     */
+    public function getInscription(): Collection
     {
-        return $this->classeAnneeScolaire;
+        return $this->inscription;
     }
 
-    public function setClasseAnneeScolaire(?ClasseAnneeScolaire $classeAnneeScolaire): self
+    public function addInscription(Inscription $inscription): self
     {
-        $this->classeAnneeScolaire = $classeAnneeScolaire;
+        if (!$this->inscription->contains($inscription)) {
+            $this->inscription[] = $inscription;
+            $inscription->setApprenant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInscription(Inscription $inscription): self
+    {
+        if ($this->inscription->removeElement($inscription)) {
+            // set the owning side to null (unless already changed)
+            if ($inscription->getApprenant() === $this) {
+                $inscription->setApprenant(null);
+            }
+        }
 
         return $this;
     }
