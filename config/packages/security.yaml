@@ -18,15 +18,15 @@ security:
             security: false
             
         login:
-            pattern:  ^/api/login
+            pattern:  ^/smartSchool/login
             stateless: true
             json_login:
-                check_path:       /api/login_check
+                check_path:       /smartSchool/login_check
                 success_handler:  lexik_jwt_authentication.handler.authentication_success
                 failure_handler:  lexik_jwt_authentication.handler.authentication_failure
 
         api:
-            pattern:   ^/api
+            pattern:   ^/smartSchool
             stateless: true
             guard:
                 authenticators:
@@ -47,6 +47,6 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
-        - { path: ^/api, roles: PUBLIC_ACCESS, methods:[GET,POST]  }
-        - { path: ^/api/surveillant, roles: ["ROLE_administrateur", "ROLE_surveillant"], methods:[POST,GET,PUT,PATCH,DELETE] }
-        - { path: ^/api/admin, roles: ["ROLE_administrateur"], methods:[POST,GET,PUT,PATCH,DELETE] }
+        - { path: ^/smartSchool, roles: PUBLIC_ACCESS, methods:[GET,POST]  }
+        - { path: ^/smartSchool/surveillant, roles: ["ROLE_administrateur", "ROLE_surveillant"], methods:[POST,GET,PUT,PATCH,DELETE] }
+        - { path: ^/smartSchool/admin, roles: ["ROLE_administrateur"], methods:[POST,GET,PUT,PATCH,DELETE] }
